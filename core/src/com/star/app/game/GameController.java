@@ -42,10 +42,24 @@ public class GameController {
         hero.update(dt);
         asteroidController.update(dt);
         bulletController.update(dt);
-        checkCollisions();
+        checkHit();
+        checkCollision();
     }
 
-    public void checkCollisions() {
+    private void checkCollision() {
+        for (int i = 0; i < asteroidController.getActiveList().size(); i++) {
+            Asteroid a = asteroidController.getActiveList().get(i);
+            if (a.getHitArea().contains(hero.getHitArea())) {
+                a.deactivate();
+                hero.takeDamage(1);
+                if (!hero.takeDamage(1)) {
+                    ///game over
+                }
+            }
+        }
+    }
+
+    public void checkHit() {
         for (int i = 0; i < bulletController.getActiveList().size(); i++) {
             Bullet b = bulletController.getActiveList().get(i);
             for (int j = 0; j < asteroidController.getActiveList().size(); j++) {
